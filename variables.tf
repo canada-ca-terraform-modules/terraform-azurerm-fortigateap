@@ -8,10 +8,6 @@ variable "envprefix" {
   default     = "Demo"
 }
 
-variable "secretPasswordName" {
-  description = "Name of Keuvault secrets containing the desired firewall password"
-}
-
 variable "tags" {
   default = {
     "Organizations"     = "PwP0-CCC-E&O"
@@ -30,40 +26,38 @@ variable "keyvault" {
   }
 }
 
-variable "FW-A" {
+variable "firewall" {
   default = {
-    nic1 = {
-      private_ip_address = "100.96.112.4"
+    fwprefix                     = "FW"
+    vm_size                      = "Standard_F4"
+    vnet_name                    = "Core-NetCore-VNET"
+    fortigate_resourcegroup_name = "Core-FWCore-RG"
+    keyvault_resourcegroup_name  = "Core-Keyvault-RG"
+    vnet_resourcegroup_name      = "Core-NetCore-RG"
+    fwa_custom_data              = "fwconfig/coreA-lic.conf"
+    fwb_custom_data              = "fwconfig/coreB-lic.conf"
+    outside_subnet_name          = "Outside"
+    inside_subnet_name           = "CoreToSpokes"
+    mgmt_subnet_name             = "Management"
+    ha_subnet_name               = "HASync"
+    fwa_nic1_private_ip_address  = "100.96.112.4"
+    fwa_nic2_private_ip_address  = "100.96.116.5"
+    fwa_nic3_private_ip_address  = "100.96.116.36"
+    fwa_nic4_private_ip_address  = "100.96.116.68"
+    fwb_nic1_private_ip_address  = "100.96.112.5"
+    fwb_nic2_private_ip_address  = "100.96.116.6"
+    fwb_nic3_private_ip_address  = "100.96.116.37"
+    fwb_nic4_private_ip_address  = "100.96.116.69"
+    storage_image_reference = {
+      publisher = "fortinet"
+      offer     = "fortinet_fortigate-vm_v5"
+      sku       = "fortinet_fg-vm"
+      version   = "latest"
     }
-    nic2 = {
-      private_ip_address = "100.96.116.5"
+    plan = {
+      name      = "fortinet_fg-vm"
+      publisher = "fortinet"
+      product   = "fortinet_fortigate-vm_v5"
     }
-    nic3 = {
-      private_ip_address = "100.96.116.36"
-    }
-    nic4 = {
-      private_ip_address = "100.96.116.68"
-    }
-    vm_size     = "Standard_F4"
-    custom_data = "fwconfig/coreA-lic.conf"
-  }
-}
-
-variable "FW-B" {
-  default = {
-    nic1 = {
-      private_ip_address = "100.96.112.5"
-    }
-    nic2 = {
-      private_ip_address = "100.96.116.6"
-    }
-    nic3 = {
-      private_ip_address = "100.96.116.37"
-    }
-    nic4 = {
-      private_ip_address = "100.96.116.69"
-    }
-    vm_size     = "Standard_F4"
-    custom_data = "fwconfig/coreB-lic.conf"
   }
 }

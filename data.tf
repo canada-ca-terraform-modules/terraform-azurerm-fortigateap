@@ -4,31 +4,31 @@ data "azurerm_key_vault" "keyvaultsecrets" {
 }
 
 data "azurerm_key_vault_secret" "fwpasswordsecret" {
-  name         = "${var.secretPasswordName}"
+  name         = "${var.firewall.secretPasswordName}"
   key_vault_id = "${data.azurerm_key_vault.keyvaultsecrets.id}"
 }
 
 data "azurerm_subnet" "Outside" {
-  name                 = "${local.fwsubnets.outside}"
-  virtual_network_name = "${local.vnetname.netcore}"
-  resource_group_name  = "${local.rgname.netcore}"
+  name                 = "${var.firewall.outside_subnet_name}"
+  virtual_network_name = "${var.firewall.vnet_name}"
+  resource_group_name  = "${var.firewall.vnet_resourcegroup_name}"
 }
 
 data "azurerm_subnet" "CoreToSpokes" {
-  name                 = "${local.fwsubnets.inside}"
-  virtual_network_name = "${local.vnetname.netcore}"
-  resource_group_name  = "${local.rgname.netcore}"
+  name                 = "${var.firewall.inside_subnet_name}"
+  virtual_network_name = "${var.firewall.vnet_name}"
+  resource_group_name  = "${var.firewall.vnet_resourcegroup_name}"
 }
 
 data "azurerm_subnet" "HASync" {
-  name                 = "${local.fwsubnets.ha}"
-  virtual_network_name = "${local.vnetname.netcore}"
-  resource_group_name  = "${local.rgname.netcore}"
+  name                 = "${var.firewall.ha_subnet_name}"
+  virtual_network_name = "${var.firewall.vnet_name}"
+  resource_group_name  = "${var.firewall.vnet_resourcegroup_name}"
 }
 
 data "azurerm_subnet" "Management" {
-  name                 = "${local.fwsubnets.mgmt}"
-  virtual_network_name = "${local.vnetname.netcore}"
-  resource_group_name  = "${local.rgname.netcore}"
+  name                 = "${var.firewall.mgmt_subnet_name}"
+  virtual_network_name = "${var.firewall.vnet_name}"
+  resource_group_name  = "${var.firewall.vnet_resourcegroup_name}"
 }
 

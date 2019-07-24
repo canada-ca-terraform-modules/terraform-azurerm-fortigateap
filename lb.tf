@@ -1,18 +1,18 @@
 resource azurerm_lb_backend_address_pool FW-ExternalLoadBalancer__FWpublicLBBE {
   name                = "${var.envprefix}FWpublicLBBE"
-  resource_group_name = "${local.rgname.fortigate}"
+  resource_group_name = "${var.firewall.fortigate_resourcegroup_name}"
   loadbalancer_id     = "${azurerm_lb.FW-ExternalLoadBalancer.id}"
 }
 
 resource azurerm_lb_backend_address_pool FW-InternalLoadBalancer__FW-ILB-CoreToSpokes-BackEnd {
   name                = "${var.envprefix}FW-ILB-CoreToSpokes-BackEnd"
-  resource_group_name = "${local.rgname.fortigate}"
+  resource_group_name = "${var.firewall.fortigate_resourcegroup_name}"
   loadbalancer_id     = "${azurerm_lb.FW-InternalLoadBalancer.id}"
 }
 
 resource azurerm_lb_probe FW-ExternalLoadBalancer__lbprobe {
   name                = "lbprobe"
-  resource_group_name = "${local.rgname.fortigate}"
+  resource_group_name = "${var.firewall.fortigate_resourcegroup_name}"
   loadbalancer_id     = "${azurerm_lb.FW-ExternalLoadBalancer.id}"
   protocol            = "Tcp"
   port                = "8008"
@@ -22,7 +22,7 @@ resource azurerm_lb_probe FW-ExternalLoadBalancer__lbprobe {
 
 resource azurerm_lb_probe FW-InternalLoadBalancer__lbprobe {
   name                = "lbprobe"
-  resource_group_name = "${local.rgname.fortigate}"
+  resource_group_name = "${var.firewall.fortigate_resourcegroup_name}"
   loadbalancer_id     = "${azurerm_lb.FW-InternalLoadBalancer.id}"
   protocol            = "Tcp"
   port                = "8008"
@@ -32,7 +32,7 @@ resource azurerm_lb_probe FW-InternalLoadBalancer__lbprobe {
 
 resource azurerm_lb_rule FW-ExternalLoadBalancer__jumpboxRDP {
   name                           = "jumpboxRDP"
-  resource_group_name            = "${local.rgname.fortigate}"
+  resource_group_name            = "${var.firewall.fortigate_resourcegroup_name}"
   loadbalancer_id                = "${azurerm_lb.FW-ExternalLoadBalancer.id}"
   frontend_ip_configuration_name = "${var.envprefix}FWpublicLBFE"
   protocol                       = "Tcp"
@@ -47,7 +47,7 @@ resource azurerm_lb_rule FW-ExternalLoadBalancer__jumpboxRDP {
 
 resource azurerm_lb_rule FW-InternalLoadBalancer__lbruleFE2all {
   name                           = "lbruleFE2all"
-  resource_group_name            = "${local.rgname.fortigate}"
+  resource_group_name            = "${var.firewall.fortigate_resourcegroup_name}"
   loadbalancer_id                = "${azurerm_lb.FW-InternalLoadBalancer.id}"
   frontend_ip_configuration_name = "${var.envprefix}FW-ILB-CoreToSpokes-FrontEnd"
   protocol                       = "All"
@@ -63,7 +63,7 @@ resource azurerm_lb_rule FW-InternalLoadBalancer__lbruleFE2all {
 resource azurerm_lb FW-ExternalLoadBalancer {
   name                = "${var.envprefix}FW-ExternalLoadBalancer"
   location            = "${var.location}"
-  resource_group_name = "${local.rgname.fortigate}"
+  resource_group_name = "${var.firewall.fortigate_resourcegroup_name}"
   sku                 = "Standard"
   frontend_ip_configuration {
     name                 = "${var.envprefix}FWpublicLBFE"
@@ -75,7 +75,7 @@ resource azurerm_lb FW-ExternalLoadBalancer {
 resource azurerm_lb FW-InternalLoadBalancer {
   name                = "${var.envprefix}FW-InternalLoadBalancer"
   location            = "${var.location}"
-  resource_group_name = "${local.rgname.fortigate}"
+  resource_group_name = "${var.firewall.fortigate_resourcegroup_name}"
   sku                 = "Standard"
   frontend_ip_configuration {
     name               = "${var.envprefix}FW-ILB-CoreToSpokes-FrontEnd"
