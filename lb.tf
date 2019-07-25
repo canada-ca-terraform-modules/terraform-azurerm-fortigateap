@@ -30,21 +30,6 @@ resource azurerm_lb_probe FW-InternalLoadBalancer__lbprobe {
   number_of_probes    = "2"
 }
 
-resource azurerm_lb_rule FW-ExternalLoadBalancer__jumpboxRDP {
-  name                           = "jumpboxRDP"
-  resource_group_name            = "${var.firewall.fortigate_resourcegroup_name}"
-  loadbalancer_id                = "${azurerm_lb.FW-ExternalLoadBalancer.id}"
-  frontend_ip_configuration_name = "${var.envprefix}FWpublicLBFE"
-  protocol                       = "Tcp"
-  frontend_port                  = "33890"
-  backend_port                   = "33890"
-  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.FW-ExternalLoadBalancer__FWpublicLBBE.id}"
-  probe_id                       = "${azurerm_lb_probe.FW-ExternalLoadBalancer__lbprobe.id}"
-  enable_floating_ip             = false
-  idle_timeout_in_minutes        = "15"
-  load_distribution              = "Default"
-}
-
 resource azurerm_lb_rule FW-InternalLoadBalancer__lbruleFE2all {
   name                           = "lbruleFE2all"
   resource_group_name            = "${var.firewall.fortigate_resourcegroup_name}"
