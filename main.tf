@@ -48,13 +48,19 @@ resource azurerm_network_interface FW-A-Nic1 {
   enable_accelerated_networking = false
   network_security_group_id     = "${azurerm_network_security_group.NSG.id}"
   ip_configuration {
-    name                          = "ipconfig1"
-    subnet_id                     = "${data.azurerm_subnet.Outside.id}"
-    private_ip_address            = "${var.firewall.fwa_nic1_private_ip_address}"
-    private_ip_address_allocation = "Static"
-    public_ip_address_id          = "${azurerm_public_ip.FW-A-EXT-PubIP.id}"
-    primary                       = true
+    name                                    = "ipconfig1"
+    subnet_id                               = "${data.azurerm_subnet.Outside.id}"
+    private_ip_address                      = "${var.firewall.fwa_nic1_private_ip_address}"
+    private_ip_address_allocation           = "Static"
+    public_ip_address_id                    = "${azurerm_public_ip.FW-A-EXT-PubIP.id}"
+    primary                                 = true
   }
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "FW-A-Nic1-LBBE" {
+  network_interface_id    = "${azurerm_network_interface.FW-A-Nic1.id}"
+  ip_configuration_name   = "ipconfig1"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.FW-ExternalLoadBalancer__FWpublicLBBE.id}"
 }
 
 resource azurerm_network_interface FW-A-Nic2 {
@@ -65,12 +71,18 @@ resource azurerm_network_interface FW-A-Nic2 {
   enable_accelerated_networking = false
   network_security_group_id     = "${azurerm_network_security_group.NSG.id}"
   ip_configuration {
-    name                          = "ipconfig1"
-    subnet_id                     = "${data.azurerm_subnet.CoreToSpokes.id}"
-    private_ip_address            = "${var.firewall.fwa_nic2_private_ip_address}"
-    private_ip_address_allocation = "Static"
-    primary                       = true
+    name                                    = "ipconfig1"
+    subnet_id                               = "${data.azurerm_subnet.CoreToSpokes.id}"
+    private_ip_address                      = "${var.firewall.fwa_nic2_private_ip_address}"
+    private_ip_address_allocation           = "Static"
+    primary                                 = true
   }
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "FW-A-Nic2-LBBE" {
+  network_interface_id    = "${azurerm_network_interface.FW-A-Nic2.id}"
+  ip_configuration_name   = "ipconfig1"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.FW-InternalLoadBalancer__FW-ILB-CoreToSpokes-BackEnd.id}"
 }
 
 resource azurerm_network_interface FW-A-Nic3 {
@@ -113,13 +125,19 @@ resource azurerm_network_interface FW-B-Nic1 {
   enable_accelerated_networking = false
   network_security_group_id     = "${azurerm_network_security_group.NSG.id}"
   ip_configuration {
-    name                          = "ipconfig1"
-    subnet_id                     = "${data.azurerm_subnet.Outside.id}"
-    private_ip_address            = "${var.firewall.fwb_nic1_private_ip_address}"
-    private_ip_address_allocation = "Static"
-    public_ip_address_id          = "${azurerm_public_ip.FW-B-EXT-PubIP.id}"
-    primary                       = true
+    name                                    = "ipconfig1"
+    subnet_id                               = "${data.azurerm_subnet.Outside.id}"
+    private_ip_address                      = "${var.firewall.fwb_nic1_private_ip_address}"
+    private_ip_address_allocation           = "Static"
+    public_ip_address_id                    = "${azurerm_public_ip.FW-B-EXT-PubIP.id}"
+    primary                                 = true
   }
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "FW-B-Nic1-LBBE" {
+  network_interface_id    = "${azurerm_network_interface.FW-B-Nic1.id}"
+  ip_configuration_name   = "ipconfig1"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.FW-ExternalLoadBalancer__FWpublicLBBE.id}"
 }
 
 resource azurerm_network_interface FW-B-Nic2 {
@@ -130,12 +148,18 @@ resource azurerm_network_interface FW-B-Nic2 {
   enable_accelerated_networking = false
   network_security_group_id     = "${azurerm_network_security_group.NSG.id}"
   ip_configuration {
-    name                          = "ipconfig1"
-    subnet_id                     = "${data.azurerm_subnet.CoreToSpokes.id}"
-    private_ip_address            = "${var.firewall.fwb_nic2_private_ip_address}"
-    private_ip_address_allocation = "Static"
-    primary                       = true
+    name                                    = "ipconfig1"
+    subnet_id                               = "${data.azurerm_subnet.CoreToSpokes.id}"
+    private_ip_address                      = "${var.firewall.fwb_nic2_private_ip_address}"
+    private_ip_address_allocation           = "Static"
+    primary                                 = true
   }
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "FW-B-Nic2-LBBE" {
+  network_interface_id    = "${azurerm_network_interface.FW-B-Nic2.id}"
+  ip_configuration_name   = "ipconfig1"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.FW-InternalLoadBalancer__FW-ILB-CoreToSpokes-BackEnd.id}"
 }
 
 resource azurerm_network_interface FW-B-Nic3 {
@@ -222,10 +246,10 @@ resource azurerm_virtual_machine FW-A {
   availability_set_id = "${azurerm_availability_set.availabilityset.id}"
   vm_size             = "${var.firewall.vm_size}"
   network_interface_ids = [
-  "${azurerm_network_interface.FW-A-Nic1.id}", 
-  "${azurerm_network_interface.FW-A-Nic2.id}", 
-  "${azurerm_network_interface.FW-A-Nic3.id}", 
-  "${azurerm_network_interface.FW-A-Nic4.id}" ]
+    "${azurerm_network_interface.FW-A-Nic1.id}",
+    "${azurerm_network_interface.FW-A-Nic2.id}",
+    "${azurerm_network_interface.FW-A-Nic3.id}",
+  "${azurerm_network_interface.FW-A-Nic4.id}"]
   primary_network_interface_id     = "${azurerm_network_interface.FW-A-Nic1.id}"
   delete_data_disks_on_termination = "true"
   delete_os_disk_on_termination    = "true"
@@ -276,7 +300,7 @@ resource azurerm_virtual_machine FW-B {
     "${azurerm_network_interface.FW-B-Nic1.id}",
     "${azurerm_network_interface.FW-B-Nic2.id}",
     "${azurerm_network_interface.FW-B-Nic3.id}",
-    "${azurerm_network_interface.FW-B-Nic4.id}"]
+  "${azurerm_network_interface.FW-B-Nic4.id}"]
   primary_network_interface_id     = "${azurerm_network_interface.FW-B-Nic1.id}"
   delete_data_disks_on_termination = "true"
   delete_os_disk_on_termination    = "true"

@@ -98,6 +98,7 @@ TO BE DOCUMENTED
 
 ## History
 
-| Date     | Release | Change     |
-| -------- | ------- | ---------- |
-| 20190724 |         | 1st deploy |
+| Date     | Release    | Change                             |
+| -------- | ---------- | ---------------------------------- |
+| 20190725 | 20190725.1 | Fix missing backend LB association |
+| 20190724 | 20190724.1 | 1st deploy                         |
