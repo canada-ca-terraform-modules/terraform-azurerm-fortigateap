@@ -20,8 +20,7 @@ The following security controls can be met through configuration of this templat
 
 ```terraform
 module "fortigateap" {
-  #source = "github.com/canada-ca-terraform-modules/terraform-azurerm-fortigateap?ref=20190725.1"
-  source = "./terraform-azurerm-fortigateap"
+  source = "github.com/canada-ca-terraform-modules/terraform-azurerm-fortigateap?ref=20191127.1"
 
   name                    = "TST-fw-core"
   vm_size                 = "Standard_F4"
